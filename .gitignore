@@ -2,3 +2,8 @@
 
 venv/
 
+__pycache__/
+
+model/__pycache__/
+
+*/__pycache__/

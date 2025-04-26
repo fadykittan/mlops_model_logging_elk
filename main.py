@@ -11,6 +11,8 @@ def main():
     # Transform
     transform = Transformer(config)
     df = transform.transform(df)
+    print("====================")
+    print(df)
 
     # Model
     model = Model(config)

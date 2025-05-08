@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  app:
+    image: temp_elk # app image name
+    container_name: my_elk_app
+    volumes:
+      - shared-logs:/app/logs
+    environment:
+      - LOG_PATH=/app/logs/app.log
+    # Assuming your app writes logs to /app/logs/app.log
+    # Adjust as needed
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.12.0
+    container_name: filebeat
+    user: root
+    depends_on:
+      - logstash
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - shared-logs:/var/log/app
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.12.0
+    container_name: logstash
+    ports:
+      - "5044:5044"
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+
+volumes:
+  shared-logs:

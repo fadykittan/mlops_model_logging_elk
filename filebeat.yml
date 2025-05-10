@@ -1,0 +1,9 @@
+filebeat.inputs:
+  - type: filestream
+    id: my-app-logs
+    enabled: true
+    paths:
+      - /var/log/app/*.log  # Path inside the Filebeat container
+
+output.logstash:
+  hosts: ["logstash:5044"]  # Change to Logstash container's hostname or IP
